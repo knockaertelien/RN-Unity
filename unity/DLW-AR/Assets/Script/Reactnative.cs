@@ -10,7 +10,6 @@ public class Reactnative : MonoBehaviour
     public ResetScript scriptResetScript;
     private string guiDebugText = "test";
     private GUIStyle guiStyle = new GUIStyle(); //create a new variable
-    public int selectedMachine = 5;
 
     /// <summary>
     /// gets called every time the script activates.
@@ -87,6 +86,15 @@ public class Reactnative : MonoBehaviour
     {
         guiStyle.fontSize = 30; //change the font size
         GUI.Label(new Rect(10, 10, 100, 20), guiDebugText,guiStyle);
-        
+        //if(GUI.Button(new Rect(20,20,150, 150),"choose Object")){
+        //    var randomNumber = Random.Range(0, 2);
+        //    scriptClickManager.chosenObject = randomNumber;
+        //    scriptAutoPlaceItem.chosenObject = randomNumber;
+        //}
+
+        //if (GUI.Button(new Rect(20, 170, 150, 150), "Reset"))
+        //{
+        //    scriptResetScript.ResetScene();
+        //}
     }
 }

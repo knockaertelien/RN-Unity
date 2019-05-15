@@ -182,4 +182,10 @@ public class AutoPlaceItem : MonoBehaviour
     private static List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     ARSessionOrigin sessionOrigin;
+
+    public void Reset()
+    {
+        chosenObject = 5;
+        placed = false;
+    }
 }

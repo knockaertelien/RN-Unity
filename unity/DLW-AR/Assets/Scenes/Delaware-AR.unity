@@ -872,7 +872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7ab0e80cee9cc1d44928bfe488dd1e2d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PointCloudPrefab: {fileID: 1854016325464908, guid: 0d4f49e744bffd14eb527ba76c9bba12,
+  m_PointCloudPrefab: {fileID: 1854016325464908, guid: 7f988301d22a4406da0408106c75d212,
     type: 3}
 --- !u!114 &1335839537
 MonoBehaviour:
@@ -886,7 +886,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e1760703bbd54c04488a8d10600262ab, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_PlanePrefab: {fileID: 1568414836858200, guid: f0e0be81472ff1243aa2afa27e5d0e61,
+  m_PlanePrefab: {fileID: 1585201990951412, guid: 617b10198100d44078c5e70d97423117,
     type: 3}
   m_DetectionFlags: -1
 --- !u!114 &1335839538
@@ -1114,7 +1114,6 @@ MonoBehaviour:
   scriptClickManager: {fileID: 282840816}
   scriptExplode: {fileID: 742549753}
   scriptResetScript: {fileID: 269483536}
-  selectedMachine: 1
 --- !u!4 &1583541219
 Transform:
   m_ObjectHideFlags: 0

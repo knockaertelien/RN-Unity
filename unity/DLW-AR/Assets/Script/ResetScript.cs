@@ -10,6 +10,7 @@ public class ResetScript : MonoBehaviour
     
     public void ResetScene()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        clickManager.Reset();
+        autoPlaceItem.Reset();
     }
 }
