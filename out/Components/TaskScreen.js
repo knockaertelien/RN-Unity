@@ -7,17 +7,20 @@ import UnityView from './UnityView';
 class TaskScreen extends Component {
     render() {
         const infodata = this.props.info;
-        console.log(infodata);
-        const data = this.props.response[0];
+        let tasks = [];
+        for (var i in infodata) {
+            tasks.push({ 'Task': i })
+        };
+        console.log('tasks');
+        console.log(tasks);
         return [
-
             <>
                 <View style={styles.container}>
                     <Text style={styles.title}>Tasks</Text>
                     <FlatList
-                        data={data}
+                        data={tasks}
                         renderItem={({ item }) => (
-                            <TouchableOpacity onPress={() => Actions.Info({ data: item.Task })}>
+                            <TouchableOpacity onPress={() => Actions.Info({ data: item.Task, infodata: infodata[item.Task] })}>
                                 <View style={styles.card}>
                                     <Image
                                         style={styles.iconLeft}

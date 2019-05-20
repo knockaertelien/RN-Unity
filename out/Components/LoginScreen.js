@@ -33,12 +33,7 @@ class TaskScreen extends Component {
                     data: responseJson
                 })
                 if (this.state.data.credentials.password == password) {
-                    let tasks = []
-                    for (var i in this.state.data.Task) {
-                        tasks.push({ 'Task': i })
-                    }
-                    console.log(tasks)
-                    Actions.Task({ response: [tasks], info: this.state.data.Task })
+                    Actions.Task({ info: this.state.data.Task })
                 }
                 else {
                     console.error('This combo is not correct')
