@@ -11,12 +11,48 @@ import {
 import { Actions } from 'react-native-router-flux';
 import { UnityModule, MessageHandler } from 'react-native-unity-view';
 
+
+
 class TaskScreen extends Component {
+    constructor(props) {
+        super(props);
+        state = {
+            username: '',
+            password: '',
+        }
+    }
+
+    onLogin(username, password) {
+        let API = "https://dlwar.azurewebsites.net/api/db/dlwar/users/" + username;
+        fetch(API, {
+            method: 'GET'
+        })
+            .then((response) => response.json())
+            .then((responseJson) => {
+                this.setState({
+                    data: responseJson
+                })
+                if (this.state.data.credentials.password == password) {
+                    let tasks = []
+                    for (var i in this.state.data.Task) {
+                        tasks.push({ 'Task': i })
+                    }
+                    console.log(tasks)
+                    Actions.Task({ response: [tasks], info: this.state.data.Task })
+                }
+                else {
+                    console.error('This combo is not correct')
+                }
+            })
+            .catch((error) => {
+                console.error(error);
+            });
+    }
+
     render() {
         return (
             <View behavior="padding" style={styles.container}>
                 <StatusBar hidden={true} />
-
                 <View style={styles.loginContainer}>
                     <Image
                         resizeMode="contain"
@@ -27,8 +63,6 @@ class TaskScreen extends Component {
                 <View style={styles.loginContainer}>
                     <View>
                         <View style={styles.container2}>
-
-
                             <View style={styles.input}>
                                 <Image
                                     style={styles.icon}
@@ -42,7 +76,8 @@ class TaskScreen extends Component {
                                     keyboardType="email-address"
                                     returnKeyType="next"
                                     placeholder="Username"
-                                    placeholderTextColor="#999999" />
+                                    placeholderTextColor="#999999"
+                                    onChangeText={(username) => this.setState({ username })} />
                             </View>
                             <View style={styles.input}>
                                 <Image
@@ -56,11 +91,11 @@ class TaskScreen extends Component {
                                     placeholder="Password"
                                     placeholderTextColor="#999999"
                                     secureTextEntry
-                                />
+                                    onChangeText={(password) => this.setState({ password })} />
                             </View>
                             <TouchableOpacity
                                 style={styles.buttonContainer}
-                                onPress={Actions.Task}
+                                onPress={() => { this.onLogin(this.state.username, this.state.password) }}
                             >
                                 <Text style={styles.buttonText}>LOGIN</Text>
                             </TouchableOpacity>
@@ -134,3 +169,4 @@ const styles = StyleSheet.create({
         marginLeft: 15
     }
 });
+

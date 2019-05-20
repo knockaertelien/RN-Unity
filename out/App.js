@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { BackHandler, Image } from 'react-native';
 import { Router, Scene, Actions } from 'react-native-router-flux';
 import { UnityModule, MessageHandler } from 'react-native-unity-view';
+import { Dropdown } from 'react-native-material-dropdown';
 
 import LoginScreen from './Components/LoginScreen';
 import TaskScreen from './Components/TaskScreen';
@@ -26,7 +27,15 @@ export default class App extends Component {
     }
 
     render() {
+        let data = [{
+            value: 'Banana',
+        }, {
+            value: 'Mango',
+        }, {
+            value: 'Pear',
+        }];
         return (
+
             <Router navigationBarStyle={{ backgroundColor: '#c42828' }}>
 
                 <Scene key='root'>
@@ -53,6 +62,7 @@ export default class App extends Component {
                         key='Machine'
                         component={MachineScreen}
                         title='Machine'
+                        renderRightButton={() => { }}
                     />
                     <Scene
                         key='MachinePart'
@@ -61,6 +71,7 @@ export default class App extends Component {
                         onRight={this.Explode}
                         rightTitle={'Explode'}
                         rightButtonTextStyle={{ color: 'black' }}
+                        renderBackButton={() => { }}
                     />
                     <Scene
                         key='MachineInfo'

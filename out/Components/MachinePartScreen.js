@@ -10,13 +10,7 @@ export default class MachinePart extends Component {
             <View style={{ flex: 1 }}>
                 <View style={styles.container}>
                     <UnityView />
-                    <View style={{ alignItems: "flex-end", marginTop: 30, marginLeft: 10 }}>
-                        <Button
-                            onPress={() => { console.log("backkkkkkkkkk"); Actions.MachineInfo() }}
-                            title="To Machine Info"
-                            color='#c42828'
-                        />
-                    </View>
+
                 </View>
             </View>
         )

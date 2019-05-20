@@ -13,10 +13,14 @@ export default class UnityViewWrapper extends Component {
         console.log(MessageHandler.name)
         switch (MessageHandler.name) {
             case 'To part':
-                Actions.MachinePart
+                if (Actions.currentScene !== 'MachinePart') {
+                    Actions.MachinePart()
+                }
                 break;
             case 'To info':
-                Actions.MachineInfo
+                if (Actions.currentScene !== 'MachineInfo') {
+                    Actions.MachineInfo()
+                }
                 break;
             default:
                 console.log('nope')

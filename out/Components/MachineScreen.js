@@ -4,6 +4,7 @@ import { UnityModule, MessageHandler } from 'react-native-unity-view';
 import UnityView from './UnityView';
 import { Actions } from 'react-native-router-flux';
 
+
 export default class Machine extends Component {
     componentDidMount() {
         console.log(this.props.data)
@@ -36,6 +37,15 @@ export default class Machine extends Component {
             data: '',
         });
     }
+
+    onBackToMachine() {
+        console.log('Return to machine')
+        UnityModule.postMessageToUnityManager({
+            name: 'Return to machine',
+            data: '',
+        });
+    }
+
     render() {
         return (
             <View style={{ flex: 1 }}>
@@ -46,9 +56,6 @@ export default class Machine extends Component {
                         <Button title="Layer 1" color='#c42828' onPress={this.onLayerClick1} />
                         <Button title="Layer 2" color='#c42828' onPress={this.onLayerClick2} />
                     </View>
-                </View>
-                <View style={{ justifyContent: 'space-between', alignItems: "flex-start", marginTop: 30, marginLeft: 10 }}>
-                    <Button onPress={() => { Actions.MachinePart({ onBack: () => console.log('back to machine') }) }} title="To Machine Part" color='#c42828' />
                 </View>
             </View>
         )
