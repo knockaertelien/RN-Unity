@@ -3,46 +3,77 @@ import {
     Text,
     View,
     StyleSheet,
-    Button,
-    Alert,
-    StatusBar,
     FlatList,
-    Dimensions,
+    Alert
 } from 'react-native';
 import UnityView from './UnityView';
+import { UnityModule, MessageHandler } from 'react-native-unity-view';
 
 export default class MachineInfo extends Component {
+
+    constructor(props) {
+        super(props);
+    }
+
+    componentDidMount() {
+        UnityModule.postMessageToUnityManager({
+            name: 'Info',
+            data: '',
+            callBack: (data) => {
+                this.model = data.CallbackTest.toString();
+                let API = "https://dlwar.azurewebsites.net/api/db/dlwar/" + this.model;
+                fetch(API, {
+                    method: 'GET'
+                })
+                    .then((response) => response.json())
+                    .then((responseJson) => {
+                        this.setState({ data: responseJson })
+                        let info = [];
+                        for (var i in this.state.data) {
+                            if (i == 'id' || i.includes('_')) {
+                                continue;
+                            }
+                            else {
+                                info.push({ key: i, value: this.state.data[i] })
+                            }
+                            this.setState({ info: info })
+                        };
+                    })
+                    .catch((error) => {
+                        console.error(error);
+                    });
+            }
+        })
+
+    };
+
     render() {
         return (
             <View style={{ flex: 1 }}>
                 <UnityView />
                 <View style={styles.boxContainer}>
                     <View style={styles.textBox}>
-                        <View style={styles.textBoxText}>
-                            <Text style={styles.title}>Info Part</Text>
-                            <FlatList
-                                style={{ marginTop: 80 }}
-                                data={[
-                                    { key: 'Devin', value: 'data' },
-                                    { key: 'Jackson', value: 'data' },
-                                    { key: 'James', value: 'data' },
-                                    { key: 'Joel', value: 'data' },
-                                ]}
-                                renderItem={({ item }) => (
-                                    <View style={styles.keyValueBox}>
-                                        <View style={styles.keyBox}>
-                                            <Text style={styles.key}>{item.key}</Text>
+                        {this.state && this.state.data &&
+                            <View style={styles.textBoxText}>
+                                <Text style={styles.title}>{this.state.data.id}</Text>
+                                <FlatList
+                                    style={{ marginTop: 80 }}
+                                    data={this.state.info}
+                                    renderItem={({ item }) => (
+                                        <View style={styles.keyValueBox}>
+                                            <View style={styles.keyBox}>
+                                                <Text style={styles.key}>{item.key}</Text>
+                                            </View>
+                                            <View style={styles.valueBox}>
+                                                <Text style={styles.value}>{item.value}</Text>
+                                            </View>
                                         </View>
-                                        <View style={styles.valueBox}>
-                                            <Text style={styles.value}>{item.value}</Text>
-                                        </View>
-                                    </View>
-                                )}
-                            />
-                        </View>
+                                    )}
+                                />
+                            </View>
+                        }
                     </View>
                 </View>
-
             </View>
         );
     }

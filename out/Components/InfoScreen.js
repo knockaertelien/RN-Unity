@@ -22,8 +22,6 @@ export default class Info extends Component {
     render() {
         const data = this.props.data;
         const infodata = this.props.infodata;
-        console.log('infodata');
-        console.log(infodata);
         return (
             <>
                 <View style={styles.container}>

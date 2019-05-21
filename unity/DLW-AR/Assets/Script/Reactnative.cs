@@ -10,6 +10,7 @@ public class Reactnative : MonoBehaviour
     public ResetScript scriptResetScript;
     private string guiDebugText = "test";
     private GUIStyle guiStyle = new GUIStyle(); //create a new variable
+    private string callbackMsg = "";
 
     /// <summary>
     /// gets called every time the script activates.
@@ -72,6 +73,9 @@ public class Reactnative : MonoBehaviour
             case "Reset":
                 scriptResetScript.ResetScene();
                 break;
+            case "Info":
+                callbackMsg = scriptClickManager.ReturnInfoToRN();
+                break;
             default:
                 break;
         }
@@ -80,21 +84,28 @@ public class Reactnative : MonoBehaviour
     
         
         Debug.Log("onMessage:" + data);
-        message.send(new { CallbackTest = "I am Unity callback" });
+        message.send(new { CallbackTest = callbackMsg });
     }
     private void OnGUI()
     {
         guiStyle.fontSize = 30; //change the font size
         GUI.Label(new Rect(10, 10, 100, 20), guiDebugText,guiStyle);
-        //if(GUI.Button(new Rect(20,20,150, 150),"choose Object")){
-        //    var randomNumber = Random.Range(0, 2);
-        //    scriptClickManager.chosenObject = randomNumber;
-        //    scriptAutoPlaceItem.chosenObject = randomNumber;
+
+        //if (GUI.Button(new Rect(170, 20, 40, 40),"Choose Obj"))
+        //{
+        //    var randNum = Random.Range(0, 2);
+        //    scriptAutoPlaceItem.chosenObject = randNum;
+        //    scriptClickManager.chosenObject = randNum;
         //}
 
-        //if (GUI.Button(new Rect(20, 170, 150, 150), "Reset"))
+        //if (GUI.Button(new Rect(20, 20, 150, 150), "Back To Machine"))
         //{
-        //    scriptResetScript.ResetScene();
+        //    scriptClickManager.ReturnToMachine();
+        //}
+
+        //if (GUI.Button(new Rect(20, 170, 150, 150), "Back To Part"))
+        //{
+        //    scriptClickManager.ReturnToPart();
         //}
     }
 }

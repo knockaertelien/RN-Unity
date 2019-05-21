@@ -10,7 +10,6 @@ export default class UnityViewWrapper extends Component {
     }
 
     onUnityMessage(MessageHandler) {
-        console.log(MessageHandler.name)
         switch (MessageHandler.name) {
             case 'To part':
                 if (Actions.currentScene !== 'MachinePart') {
@@ -23,20 +22,9 @@ export default class UnityViewWrapper extends Component {
                 }
                 break;
             default:
-                console.log('nope')
+                break;
         }
     }
-
-    // componentDidMount() {
-    //     console.log('Component Did Mount')
-    //     this.setState({ isMounted: true })
-    // }
-
-
-    // componentWillUnmount() {
-    //     console.log('Component Did Unmount')
-    //     this.setState({ isMounted: false })
-    // }
 
     render() {
         const { isMounted } = this.state;

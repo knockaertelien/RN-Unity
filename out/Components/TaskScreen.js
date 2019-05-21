@@ -11,8 +11,6 @@ class TaskScreen extends Component {
         for (var i in infodata) {
             tasks.push({ 'Task': i })
         };
-        console.log('tasks');
-        console.log(tasks);
         return [
             <>
                 <View style={styles.container}>

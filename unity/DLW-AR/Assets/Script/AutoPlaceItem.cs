@@ -6,6 +6,7 @@ using UnityEngine.XR.ARFoundation;
 
 public class AutoPlaceItem : MonoBehaviour
 {
+    public static List<GameObject> layers = new List<GameObject>();
     public GameObject[] machineObject;
     public int chosenObject = 5;
     private bool placed = false;
@@ -15,9 +16,7 @@ public class AutoPlaceItem : MonoBehaviour
     public GameObject testingFloor;
     public GameObject layer1;
     public GameObject layer2;
-
-
-    
+    string name;    
 
     /// <summary>
     /// rotates object to camera
@@ -29,8 +28,8 @@ public class AutoPlaceItem : MonoBehaviour
     {
         if (chosenObject < 4)
         {
-
-
+            PopulateLayers();
+            Layers();
             if (!placed)
             {
                 FollowCamera(hitPoint);
@@ -41,6 +40,7 @@ public class AutoPlaceItem : MonoBehaviour
             }
             else
             {
+                
                 ChangeMeshInactive();
                 machineObject[chosenObject].AddComponent<objectManipulation>();
                 GetComponent<AutoPlaceItem>().enabled = false;
@@ -83,6 +83,23 @@ public class AutoPlaceItem : MonoBehaviour
         }
     }
 
+    private void PopulateLayers()
+    {
+        foreach (Transform child in machineHolder.transform)
+        {
+            //child1 = turbine
+            foreach (Transform child2 in child.transform)
+            {
+                //child2 = layers
+                foreach (Transform child3 in child2.transform)
+                {
+                    var layer = child2.gameObject;
+                    layers.Add(layer);
+                }
+            }
+        }
+    }
+
     // on awake
     private void Awake()
     {
@@ -119,18 +136,32 @@ public class AutoPlaceItem : MonoBehaviour
         layer2.SetActive(true);
     }
 
+    private void Layers()
+    {
+        name = "All";
+        for (int i = 0; i < layers.Count; i++)
+        {
+            name += "/" + layers[i].gameObject.name;
+        }
+        UnityMessageManager.Instance.SendMessageToRN(new UnityMessage()
+        {
+            name = name,
+            callBack = (data) =>
+            {
+                Debug.Log("onClickCallBack:" + data);
+            }
+        });
+    }
+
     //changes behaviour of script in editor vs app (to be able to debug in editor)
     private void Update()
     {
         if (chosenObject <4)
-        {
-
-        
+        {        
             if (machineObject[chosenObject].transform.parent != null)
             {
                 placed = false;
             }
-
             if (Application.isEditor)
             {
                 if (Input.touchCount >= 1 || Input.GetMouseButtonDown(0))
@@ -144,7 +175,6 @@ public class AutoPlaceItem : MonoBehaviour
                 {
                     ObjectPlacer(hit.point);
                 }
-
             }
             else
             {
@@ -157,7 +187,6 @@ public class AutoPlaceItem : MonoBehaviour
                     var hitPose = hits[0].pose;
                     ObjectPlacer(hitPose.position);                
                 }
-
             }
         }
     }
@@ -169,7 +198,6 @@ public class AutoPlaceItem : MonoBehaviour
     private void FollowCamera(Vector3 newPos)
     {
         machineObject[chosenObject].transform.parent = machineHolder.transform;
-
         machineObject[chosenObject].transform.position = newPos;
         machineObject[chosenObject].transform.rotation = Quaternion.identity;
 
@@ -187,5 +215,6 @@ public class AutoPlaceItem : MonoBehaviour
     {
         chosenObject = 5;
         placed = false;
+        layers = new List<GameObject>();
     }
 }

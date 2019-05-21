@@ -61,14 +61,7 @@ public class ClickManager : MonoBehaviour
                     //excludes any trackables from being instanced. you don't want to be able to rotate the mapping plane :)
                     if (hit.collider.gameObject.transform.parent.name != "Trackables")
                     {
-                        UnityMessageManager.Instance.SendMessageToRN(new UnityMessage()
-                        {
-                            name = "To part",
-                            callBack = (data) =>
-                            {
-                                Debug.Log("onClickCallBack:" + data);
-                            }
-                        });
+                        
 
                         // Hides machine object
                         HideObject();
@@ -166,6 +159,15 @@ public class ClickManager : MonoBehaviour
                         ChangeMeshActive();
                         // changes state
                         partState = 1;
+
+                        UnityMessageManager.Instance.SendMessageToRN(new UnityMessage()
+                        {
+                            name = "To part",
+                            callBack = (data) =>
+                            {
+                                Debug.Log("onClickCallBack:" + data);
+                            }
+                        });
                     }
                 }
                 check = false;
@@ -192,14 +194,7 @@ public class ClickManager : MonoBehaviour
                 //excludes any trackables from being instanced. you don't want to be able to rotate the mapping plane :)
                 if (hit.collider.gameObject.transform.parent.name != "Trackables")
                 {
-                    UnityMessageManager.Instance.SendMessageToRN(new UnityMessage()
-                    {
-                        name = "To info",
-                        callBack = (data) =>
-                        {
-                            Debug.Log("onClickCallBack:" + data);
-                        }
-                    });
+                    
                     //Hides part
                     HidePart();
 
@@ -217,7 +212,8 @@ public class ClickManager : MonoBehaviour
                     scale = objClicked.transform.localScale;
                     objClicked.transform.localScale = parentClicked;
                     objClicked.transform.localEulerAngles = new Vector3(0, 0, 0);
-
+                    
+                    
                     // fictional bound to place the part in
                     var bound = 2.5f;
                     var boundsObjX = objClicked.GetComponent<Collider>().bounds.extents.x;
@@ -261,6 +257,14 @@ public class ClickManager : MonoBehaviour
 
                     // changes state.
                     partState = 2;
+                    UnityMessageManager.Instance.SendMessageToRN(new UnityMessage()
+                    {
+                        name = "To info",
+                        callBack = (data) =>
+                        {
+                            Debug.Log("onClickCallBack:" + data);
+                        }
+                    });
                 }
             }
         }
@@ -401,13 +405,29 @@ public class ClickManager : MonoBehaviour
     /// </summary>
     public void ReturnToMachine()
     {
+        ChangeMeshActivePart();
         var backgroundPlaneObj = GameObject.Find("AR Session Origin/AR Camera");
-        var trackablesObj = GameObject.Find("AR Session Origin/Trackables");
+        var trackablesObj = GameObject.Find("AR Session Origin");
+        var machine = GameObject.Find("Machine");
+        machine.transform.GetChild(0).gameObject.SetActive(true);
         DestroyParts();
         backgroundPlaneObj.transform.parent.GetComponent<ARPlaneManager>().enabled = true;
         backgroundPlaneObj.transform.parent.GetComponent<ARPointCloudManager>().enabled = true;
+        foreach (Transform item in trackablesObj.transform)
+        {
+            item.gameObject.SetActive(true);
+        }
         trackablesObj.SetActive(true);
         partState = 0;
+    }
+
+    public string ReturnInfoToRN()
+    {
+        var machine = GameObject.Find("Machine");
+        var machineName = machine.transform.GetChild(0).name;
+        var objclicked = GameObject.Find("AR Session Origin/AR Camera/InfoParts").transform.GetChild(0);
+        var partname = machineName + "/" + objclicked.name.Substring(0, objclicked.name.Length - 7);
+        return partname;
     }
 
     public void Reset()
